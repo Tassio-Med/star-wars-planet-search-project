@@ -1,54 +1,47 @@
 import React, { useContext } from 'react';
 import ContextProvider from '../context/ContextProvider';
 
-const Table = () => {
-  const { data } = useContext(ContextProvider);
+function Table() {
+  const { data, nameToFilter } = useContext(ContextProvider);
+  const tableInf = ['Name', 'Rotation Period', 'Orbital Period', 'Diameter',
+    'Climate', 'Gravity', 'Terrain', 'Surface Water', 'Population', 'Films',
+    'Created', 'Edited', 'URL'];
   return (
     <table>
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Rotation Period</th>
-          <th>Orbital Period</th>
-          <th>Diameter</th>
-          <th>Climate</th>
-          <th>Gravity</th>
-          <th>Terrain</th>
-          <th>Surface Water</th>
-          <th>Population</th>
-          <th>Films</th>
-          <th>Created</th>
-          <th>Edited</th>
-          <th>URL</th>
+          {tableInf.map((inf, index) => <th key={ index }>{ inf }</th>)}
         </tr>
       </thead>
       <tbody>
-        {data.map((planet, index) => {
-          const { name, diameter, climate, gravity, terrain, population,
-            films, created, edited, url } = planet;
-          return (
-            <tr key={ index }>
-              <td>
-                {name}
-              </td>
-              <td>{planet.rotation_period}</td>
-              <td>{planet.orbital_period}</td>
-              <td>{diameter}</td>
-              <td>{climate}</td>
-              <td>{gravity}</td>
-              <td>{terrain}</td>
-              <td>{planet.surface_water}</td>
-              <td>{population}</td>
-              <td>{films}</td>
-              <td>{created}</td>
-              <td>{edited}</td>
-              <td>{url}</td>
-            </tr>
-          );
-        })}
+        {data ? (
+          data.filter((setPlanet) => setPlanet.name
+            .includes(nameToFilter.name))
+            .map((planet, index) => (
+              <tr key={ index }>
+                <td>{ planet.name }</td>
+                <td>{ planet.rotation_period }</td>
+                <td>{ planet.orbital_period }</td>
+                <td>{ planet.diameter }</td>
+                <td>{ planet.climate }</td>
+                <td>{ planet.gravity }</td>
+                <td>{ planet.terrain }</td>
+                <td>{ planet.surface_water }</td>
+                <td>{ planet.population }</td>
+                <td>{ planet.films }</td>
+                <td>{ planet.created }</td>
+                <td>{ planet.edited }</td>
+                <td>{ planet.url }</td>
+              </tr>
+            ))
+        ) : (
+          <tr>
+            <td>Loading...</td>
+          </tr>
+        )}
       </tbody>
     </table>
   );
-};
+}
 
 export default Table;
