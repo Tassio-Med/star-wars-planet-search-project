@@ -2,10 +2,35 @@ import React, { useContext } from 'react';
 import ContextProvider from '../context/ContextProvider';
 
 function Table() {
-  const { data, nameToFilter } = useContext(ContextProvider);
-  const tableInf = ['Name', 'Rotation Period', 'Orbital Period', 'Diameter',
-    'Climate', 'Gravity', 'Terrain', 'Surface Water', 'Population', 'Films',
+  const {
+    data,
+    nameToFilter,
+    numberToFilter,
+  } = useContext(ContextProvider);
+
+  const {
+    column,
+    comparision,
+    value,
+  } = numberToFilter[0] || '';
+
+  const tableInf = ['Name', 'Rotation Period', 'Orbital Period', 'Diameter', 'Climate',
+    'Gravity', 'Terrain', 'Surface Water', 'Population', 'Films',
     'Created', 'Edited', 'URL'];
+
+  const elementsFilter = () => data.filter((filteredByNumber) => {
+    if (value || value === 0) {
+      if (comparision.includes('maior')) {
+        return filteredByNumber[column] > +value;
+      }
+      if (comparision.includes('menor')) {
+        return filteredByNumber[column] < +value;
+      }
+      return filteredByNumber[column] === value;
+    }
+    return filteredByNumber;
+  });
+
   return (
     <table>
       <thead>
@@ -15,8 +40,8 @@ function Table() {
       </thead>
       <tbody>
         {data ? (
-          data.filter((setPlanet) => setPlanet.name
-            .includes(nameToFilter.name))
+          elementsFilter()
+            .filter((setPlanet) => setPlanet.name.includes(nameToFilter.name))
             .map((planet, index) => (
               <tr key={ index }>
                 <td>{ planet.name }</td>
