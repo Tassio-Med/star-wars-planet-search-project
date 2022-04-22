@@ -2,11 +2,29 @@ import React, { useContext } from 'react';
 import ContextProvider from '../context/ContextProvider';
 
 function FilterNumber() {
-  const { handleChange, filterByNumber, value } = useContext(ContextProvider);
-  // NÃO ESQUECER: filterByNumber, para StarWarsContext;
+  const { handleChange, filterByNumber,
+    value, numberToFilter } = useContext(ContextProvider);
   const searchOptions = ['population', 'orbital_period', 'diameter',
     'rotation_period', 'surface_water'];
   const biggerLessEqual = ['maior que', 'menor que', 'igual a'];
+  // NÃO ESQUECER: filterByNumber, para StarWarsContext;
+
+  const removeComparision = () => {
+    numberToFilter.forEach(({ comparision }) => {
+      biggerLessEqual.splice(biggerLessEqual
+        .indexOf(comparision), 1);
+    });
+    return biggerLessEqual;
+  };
+
+  const removeSearchOptions = () => {
+    numberToFilter.forEach(({ column }) => {
+      searchOptions.splice(searchOptions
+        .indexOf(column), 1);
+    });
+    return searchOptions;
+  };
+
   return (
     <section>
       <label htmlFor="column">
@@ -16,7 +34,7 @@ function FilterNumber() {
           data-testid="column-filter"
           onChange={ handleChange }
         >
-          {searchOptions
+          {removeSearchOptions()
             .map((column, index) => <option key={ index }>{ column }</option>)}
         </select>
       </label>
@@ -27,7 +45,7 @@ function FilterNumber() {
           data-testid="comparison-filter"
           onChange={ handleChange }
         >
-          {biggerLessEqual
+          {removeComparision()
             .map((comparision, index) => <option key={ index }>{ comparision }</option>)}
         </select>
       </label>

@@ -4,17 +4,8 @@ import ContextProvider from './ContextProvider';
 
 const StarWarsContext = ({ children }) => {
   const [data, takeData] = useState();
-  const [nameToFilter, defineFilter] = useState({
-    name: '',
-  });
-
-  // filteredPlanetByNumeric
-  // filterByNumericValues
-
-  const [column, defineColumn] = useState('population');
-  const [comparision, defineComparision] = useState('maior que');
-  const [value, defineValue] = useState(0);
-  const [numberToFilter, filterByNumValue] = useState([]);
+  // defineFilter
+  // filterByNumValue
 
   useEffect(() => {
     const fetchApiData = async () => {
@@ -27,9 +18,14 @@ const StarWarsContext = ({ children }) => {
     fetchApiData();
   }, []);
 
+  const [nameToFilter, defineFilter] = useState({ name: '' });
   const filterName = ({ target }) => {
     defineFilter({ name: target.value });
   };
+
+  const [column, defineColumn] = useState('population');
+  const [comparision, defineComparision] = useState('maior que');
+  const [value, defineValue] = useState(0);
 
   const handleChange = ({ target }) => {
     if (target.name === 'column') defineColumn(target.value);
@@ -37,20 +33,21 @@ const StarWarsContext = ({ children }) => {
     if (target.name === 'value') defineValue(target.value);
   };
 
+  const [numberToFilter, filterByNumValue] = useState([]);
   const filterByNumber = () => {
-    const otherObjFil = { column, comparision, value };
-    const otherFilValues = [...numberToFilter, otherObjFil]; // numberToFilter pode dar erro
-    filterByNumValue(otherFilValues);
+    const updatedObjFil = { column, comparision, value };
+    const updatedFilValues = [...numberToFilter, updatedObjFil]; // numberToFilter pode dar erro
+    filterByNumValue(updatedFilValues);
   };
 
   const dataValue = {
     data,
-    nameToFilter,
     filterName,
+    nameToFilter,
     handleChange,
-    column,
     comparision,
     value,
+    column,
     numberToFilter,
     filterByNumber,
   };
